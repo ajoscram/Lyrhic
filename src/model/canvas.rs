@@ -1,6 +1,6 @@
 use std::{cell::Ref, path::PathBuf};
 use nannou::{draw::{Renderer, RendererBuilder}, prelude::*, wgpu::{CommandEncoder, CommandEncoderDescriptor, Texture, TextureBuilder, TextureCapturer, TextureFormat, TextureReshaper, TextureSnapshot, TextureUsages}};
-use crate::model::{args::Args, Drawable};
+use crate::model::{Args, Drawable};
 
 const PREVIEW_SIZE: u32 = 512;
 
@@ -13,7 +13,7 @@ pub struct Canvas {
 }
 
 impl Canvas {
-    pub fn new(app: &App, args: &Args) -> Canvas {
+    pub fn new(app: &App, args: &Args) -> Self {
         let window_id = get_window_id(app);
         let window = get_window(app, window_id);
         let texture = get_texture(args, &window);
@@ -22,7 +22,7 @@ impl Canvas {
             window.device(),
             texture.descriptor());
         
-        return Canvas {
+        return Self {
             window_id,
             draw: Draw::new(),
             renderer,

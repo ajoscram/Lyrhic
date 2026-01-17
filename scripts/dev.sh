@@ -1,4 +1,4 @@
 cargo watch \
     --shell "bash scripts/run.sh" \
     --no-vcs-ignores \
-    --watch "src/" --watch ".env" --watch "scripts/run.sh"
+    --watch "src/" --watch "scripts/" --watch ".env" --watch "Cargo.toml"

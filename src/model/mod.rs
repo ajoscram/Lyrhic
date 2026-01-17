@@ -1,4 +1,4 @@
-mod args; mod picture; mod canvas;
+pub mod args; mod picture; mod canvas; mod charxel; mod char_reader;
 
 use clap::Parser;
 use nannou::{App, Draw};
@@ -6,16 +6,16 @@ use crate::model::{canvas::Canvas, picture::Picture, args::Args};
 
 pub struct Model {
     pub args: Args,
-    pub canvas: canvas::Canvas,
-    pub picture: picture::Picture,
+    pub canvas: Canvas,
+    pub picture: Picture,
 }
 
 impl Model {
-    pub fn new(app: &App) -> Model {
+    pub fn new(app: &App) -> Self {
         let args = Args::parse();
         let canvas = Canvas::new(app, &args);
         let picture = Picture::new(&args);
-        return Model { args, canvas, picture }
+        Self { args, canvas, picture }
     }
 }
 
