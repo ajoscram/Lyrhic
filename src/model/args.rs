@@ -17,11 +17,14 @@ pub struct Args {
     pub out: PathBuf,
 
     /// Font size for each "char pixel" in the image.
-    #[arg(short, long, default_value_t = 10.0)]
-    pub fontsize: f32,
+    #[arg(short, long, default_value_t = 10)]
+    pub fontsize: u32,
 
     /// Number of "char pixels" to use as the width and height of the image.
     #[arg(short, long, default_value_t = 100)]
     pub size: u32,
 }
 
+impl Args {
+    pub fn dimsize(&self) -> u32 { self.size / self.fontsize }
+}

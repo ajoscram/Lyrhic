@@ -1,32 +1,40 @@
 use core::fmt;
 use std::fmt::Display;
-use nannou::{Draw, image::{Primitive, Rgba}};
-use crate::model::Drawable;
+use nannou::{Draw, geom::Rect};
+use crate::model::{Drawable, Color};
 
-pub struct Charxel<T> where T: Primitive + Display {
+pub struct Charxel {
     char: char,
-    color: Rgba<T>,
+    rect: Rect,
+    color: Color,
 }
 
-impl<T: Primitive + Display> Charxel<T> {
-    pub fn new(char: char, color: Rgba<T>) -> Self {
-        Self { char, color }
+impl Charxel {
+    pub fn new(char: char, rect: Rect, color: Color) -> Self {
+        Self { char, rect, color }
     }
 }
 
-impl<T: Primitive + Display> Display for Charxel<T> {
+impl Display for Charxel {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f,
-            "({}, {}, {}, {}) -> {}",
-            self.color[0],
-            self.color[1],
-            self.color[2],
-            self.color[3],
-            self.char)
+        write!(f, "{} | rgba({}, {}, {}, {}) | size({}, {}) | @({}, {})",
+            self.char,
+            self.color.red,
+            self.color.green,
+            self.color.blue,
+            self.color.alpha,
+            self.rect.w(),
+            self.rect.h(),
+            self.rect.x(),
+            self.rect.y())
     }
 }
 
-impl<T: Primitive + Display> Drawable for Charxel<T>{
+impl Drawable for Charxel{
     fn draw_into(&self, draw: &Draw) {
+        draw.rect()
+            .color(self.color)
+            .xy(self.rect.xy())
+            .wh(self.rect.wh());
     }
 }

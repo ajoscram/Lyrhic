@@ -1,7 +1,7 @@
-pub mod args; mod picture; mod canvas; mod charxel; mod char_reader;
+mod args; mod picture; mod canvas; mod charxel; mod char_reader;
 
 use clap::Parser;
-use nannou::{App, Draw};
+use nannou::{App, Draw, color};
 use crate::model::{canvas::Canvas, picture::Picture, args::Args};
 
 pub struct Model {
@@ -22,3 +22,5 @@ impl Model {
 pub(crate) trait Drawable {
     fn draw_into(&self, draw: &Draw);
 }
+
+type Color = color::Alpha<nannou::prelude::rgb::Rgb<color::encoding::Srgb, u8>, u8>;
