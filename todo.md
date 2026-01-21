@@ -1,3 +1,4 @@
+* Change `fontsize` parameter to `charsize`.
 * Validate args (?)
 ```rs
 // Custom validation function

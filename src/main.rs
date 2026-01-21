@@ -13,7 +13,7 @@ fn main() {
 
 fn model(app: &App) -> Model { Model::new(app) }
 
-fn view(_: &App, model: &Model, frame: Frame) { model.canvas.show(frame); }
+fn view(app: &App, model: &Model, frame: Frame) { model.canvas.show(app, frame); }
 
 fn update(app: &App, model: &mut Model, _: Update) {
     
