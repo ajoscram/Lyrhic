@@ -20,8 +20,11 @@ fn update(app: &App, model: &mut Model, _: Update) {
     println!("Drawing...");
     model.canvas.draw(&model.picture);
 
+    println!("Rendering...");
+    let snapshot = model.canvas.render(app);
+
     println!("Saving...");
-    model.canvas.save(app, model.args.out.clone());
+    model.canvas.save(app, snapshot, &model.args.out);
 
     println!("Done!");
 }

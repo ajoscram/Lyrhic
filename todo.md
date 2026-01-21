@@ -1,5 +1,3 @@
-* iterate the over the image pixels and create rects from them
-* Move texture rendering into a separate function that gets called on either show/save
 * Validate args (?)
 ```rs
 // Custom validation function
