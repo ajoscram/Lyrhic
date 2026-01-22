@@ -79,7 +79,7 @@ fn get_window<'a>(app: &'a App, window_id: WindowId) -> Ref<'a, Window> { app.wi
 
 fn get_texture(args: &Args, window: &Window) -> Texture {
     TextureBuilder::new()
-        .size([args.size, args.size])
+        .size([args.size(), args.size()])
         .usage(TextureUsages::RENDER_ATTACHMENT | TextureUsages::TEXTURE_BINDING)
         .sample_count(window.msaa_samples())
         .format(TextureFormat::Rgba16Float)

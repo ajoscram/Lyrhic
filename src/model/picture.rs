@@ -1,5 +1,5 @@
 use std::iter;
-use nannou::{Draw, geom::Rect, image::{self, imageops::FilterType }, text::font};
+use nannou::{Draw, geom::Rect, image::{self, imageops::FilterType }};
 use crate::model::{Args, Drawable, Color, char_reader::CharReader, charxel::Charxel};
 
 pub struct Picture {
@@ -10,8 +10,8 @@ pub struct Picture {
 
 impl Picture {
     pub fn new(args: &Args) -> Self {
-        let rect = Rect::from_w_h(args.size as f32, args.size as f32);
-        let color = Color::from_components((0, 0, 0, 255));
+        let rect = Rect::from_w_h(args.size() as f32, args.size() as f32);
+        let color = args.bg.clone();
         let charxels = get_charxels(args, &rect);
         Self { color, rect, charxels }
     }
@@ -32,18 +32,17 @@ fn get_charxels(args: &Args, container: &Rect) -> Vec<Charxel> {
     let chars = CharReader::new(&args.text).cycle();
     let rects = get_rects(args, container);
     let colors = get_colors(args);
-    let font = font::default_notosans(); // TODO: Add a parameter for this
     iter::zip(chars, rects)
         .zip(colors)
         .map(|((char, rect), color)|
-            Charxel::new(char, rect, color, font.clone()))
+            Charxel::new(char, rect, color, args.font.clone()))
         .collect()
 }
 
 fn get_colors(args: &Args) -> Vec<Color> {
     image::open(&args.image)
         .unwrap()
-        .resize(args.dimsize(), args.dimsize(), FilterType::Gaussian)
+        .resize(args.chardim, args.chardim, FilterType::Gaussian)
         .to_rgba8()
         .pixels()
         .map(|x| Color::from_components((x[0], x[1], x[2], x[3])))
@@ -54,9 +53,9 @@ fn get_rects(args: &Args, container: &Rect) -> Vec<Rect> {
     let mut current = container;
     let mut rects: Vec<Rect> = Vec::new();
 
-    for y in 0..args.dimsize() {
-        for x in 0..args.dimsize() {
-            let rect = get_rect(args.fontsize as f32, x, y, *container, *current);
+    for y in 0..args.chardim {
+        for x in 0..args.chardim {
+            let rect = get_rect(args.charsize as f32, x, y, *container, *current);
             rects.push(rect);
             current = rects.last().unwrap();
         }
