@@ -57,4 +57,4 @@ impl Iterator for CharReader {
     }
 }
 
-fn is_skippable(char: char) -> bool { !char.is_ascii() || char.is_whitespace() }
+fn is_skippable(char: char) -> bool { !char.is_ascii() || char.is_whitespace() || char.is_ascii_punctuation() }

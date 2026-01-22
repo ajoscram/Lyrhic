@@ -1,5 +1,5 @@
 use std::iter;
-use nannou::{Draw, geom::Rect, image::{self, imageops::FilterType }};
+use nannou::{Draw, geom::Rect, image::{self, imageops::FilterType }, text::font};
 use crate::model::{Args, Drawable, Color, char_reader::CharReader, charxel::Charxel};
 
 pub struct Picture {
@@ -11,7 +11,7 @@ pub struct Picture {
 impl Picture {
     pub fn new(args: &Args) -> Self {
         let rect = Rect::from_w_h(args.size as f32, args.size as f32);
-        let color = Color::from_components((250, 235, 215, 255));
+        let color = Color::from_components((0, 0, 0, 255));
         let charxels = get_charxels(args, &rect);
         Self { color, rect, charxels }
     }
@@ -32,9 +32,11 @@ fn get_charxels(args: &Args, container: &Rect) -> Vec<Charxel> {
     let chars = CharReader::new(&args.text).cycle();
     let rects = get_rects(args, container);
     let colors = get_colors(args);
+    let font = font::default_notosans(); // TODO: Add a parameter for this
     iter::zip(chars, rects)
         .zip(colors)
-        .map(|((char, rect), color)| Charxel::new(char, rect, color))
+        .map(|((char, rect), color)|
+            Charxel::new(char, rect, color, font.clone()))
         .collect()
 }
 

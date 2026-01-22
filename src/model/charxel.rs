@@ -1,17 +1,18 @@
 use core::fmt;
 use std::fmt::Display;
-use nannou::{Draw, geom::Rect};
+use nannou::{Draw, geom::Rect, text::*};
 use crate::model::{Drawable, Color};
 
 pub struct Charxel {
     char: char,
     rect: Rect,
     color: Color,
+    font: Font,
 }
 
 impl Charxel {
-    pub fn new(char: char, rect: Rect, color: Color) -> Self {
-        Self { char, rect, color }
+    pub fn new(char: char, rect: Rect, color: Color, font: Font) -> Self {
+        Self { char, rect, color, font }
     }
 }
 
@@ -32,9 +33,13 @@ impl Display for Charxel {
 
 impl Drawable for Charxel{
     fn draw_into(&self, draw: &Draw) {
-        draw.rect()
+        draw
+            .text(&self.char.to_string())
+            .font(self.font.clone())
+            .font_size(self.rect.w() as u32)
             .color(self.color)
-            .xy(self.rect.xy())
-            .wh(self.rect.wh());
+            .center_justify()
+            .align_text_middle_y()
+            .xy(self.rect.xy());
     }
 }
