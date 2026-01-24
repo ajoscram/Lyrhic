@@ -1,28 +1,38 @@
 use std::iter;
-use nannou::{Draw, geom::Rect, image::{self, imageops::FilterType }};
+use nannou::{Draw, geom::Rect, image::{self, imageops::FilterType}};
 use crate::model::{Args, Drawable, Color, char_reader::CharReader, charxel::Charxel};
 
 pub struct Picture {
-    rect: Rect,
+    outer_bg: Rect,
+    inner_bg: Rect,
     color: Color,
     charxels: Vec<Charxel>,
 }
 
 impl Picture {
     pub fn new(args: &Args) -> Self {
-        let rect = Rect::from_w_h(args.size() as f32, args.size() as f32);
+        let outer_bg = Rect::from_w_h(args.size() as f32, args.size() as f32);
+        let inner_bg = outer_bg.pad(args.margin as f32);
+        let container = inner_bg.pad(args.charsize as f32);
         let color = args.bg.clone();
-        let charxels = get_charxels(args, &rect);
-        Self { color, rect, charxels }
+        let charxels = get_charxels(args, &container);
+        Self { outer_bg, inner_bg, color, charxels }
     }
 }
 
 impl Drawable for Picture {
     fn draw_into(&self, draw: &Draw) {
+        let white: Color = Color::from_components((255,255,255,255));
+
+        draw.rect()
+            .color(white)
+            .xy(self.outer_bg.xy())
+            .wh(self.outer_bg.wh());
+
         draw.rect()
             .color(self.color)
-            .xy(self.rect.xy())
-            .wh(self.rect.wh());
+            .xy(self.inner_bg.xy())
+            .wh(self.inner_bg.wh());
 
         for charxel in &self.charxels { charxel.draw_into(draw); }
     }
@@ -42,7 +52,7 @@ fn get_charxels(args: &Args, container: &Rect) -> Vec<Charxel> {
 fn get_colors(args: &Args) -> Vec<Color> {
     image::open(&args.image)
         .unwrap()
-        .resize(args.chardim, args.chardim, FilterType::Gaussian)
+        .resize(args.charres, args.charres, FilterType::Gaussian)
         .to_rgba8()
         .pixels()
         .map(|x| Color::from_components((x[0], x[1], x[2], x[3])))
@@ -53,8 +63,8 @@ fn get_rects(args: &Args, container: &Rect) -> Vec<Rect> {
     let mut current = container;
     let mut rects: Vec<Rect> = Vec::new();
 
-    for y in 0..args.chardim {
-        for x in 0..args.chardim {
+    for y in 0..args.charres {
+        for x in 0..args.charres {
             let rect = get_rect(args.charsize as f32, x, y, *container, *current);
             rects.push(rect);
             current = rects.last().unwrap();

@@ -1,4 +1,4 @@
-* Implement adding a margin
+* Add a parameter for saturation
 
 # Links
 * https://fonts.google.com/?categoryFilters=Serif:%2FSerif%2FFat+Face

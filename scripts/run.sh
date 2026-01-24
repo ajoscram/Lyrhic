@@ -6,5 +6,5 @@ cargo run -- \
     --font $FONT \
     --bg $BG \
     --charsize $CHARSIZE \
-    --chardim $CHARDIM \
+    --charres $CHARRES \
     --margin $MARGIN

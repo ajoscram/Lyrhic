@@ -38,7 +38,7 @@ impl CharReader {
             Err(error) => panic!("An error happened reading from {:?}: {}", &self.path, error),
             Ok(char_container) => match char_container {
                 Char::Eof | Char::NoData => None,
-                Char::Char(char) => Some(char),
+                Char::Char(char) => Some(char.to_ascii_uppercase()),
             },
         }
     }

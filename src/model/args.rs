@@ -29,12 +29,12 @@ pub struct Args {
     pub bg: Color,
     
     /// Size in pixels for each "char pixel" in the image.
-    #[arg(short='s', long, default_value_t=16)]
+    #[arg(short='s', long, default_value_t=32)]
     pub charsize: u32,
     
-    /// Number of "char pixels" to use for the dimensions of the image (width and height).
-    #[arg(short='d', long, default_value_t=512)]
-    pub chardim: u32,
+    /// Number of "char pixels" to use as the width and height of the image.
+    #[arg(short='r', long, default_value_t=128)]
+    pub charres: u32,
 
     /// Number of pixels to use as an additional margin to the image.
     #[arg(short, long, default_value_t=0)]
@@ -42,7 +42,7 @@ pub struct Args {
 }
 
 impl Args {
-    pub fn size(&self) -> u32 { self.chardim * self.charsize }
+    pub fn size(&self) -> u32 { (self.charres + 2) * self.charsize + (self.margin * 2) }
 }
 
 fn parse_file(s: &str) -> Result<PathBuf, String> {
