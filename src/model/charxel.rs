@@ -31,7 +31,7 @@ impl Display for Charxel {
     }
 }
 
-impl Drawable for Charxel{
+impl Drawable for Charxel {
     fn draw_into(&self, draw: &Draw) {
         draw
             .text(&self.char.to_string())

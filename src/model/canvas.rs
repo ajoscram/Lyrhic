@@ -49,14 +49,14 @@ impl Canvas {
     pub fn save(&self, app: &App, snapshot: TextureSnapshot, output_path: &PathBuf) {
         let output_path_clone = output_path.clone();
         snapshot
-        .read(|result| {
-            result
-                .expect("Failed to map texture memory.")
-                .to_owned()
-                .save(output_path_clone)
-                .expect("Failed to save texture to PNG image.");
-        })
-        .unwrap();
+            .read(|result| {
+                result
+                    .expect("Failed to map texture memory.")
+                    .to_owned()
+                    .save(output_path_clone)
+                    .expect("Failed to save texture to PNG image.");
+            })
+            .unwrap();
 
         // TODO: await_active_snapshots is not working as intended.
         // This seems to do something for now, but needs to get removed eventually
